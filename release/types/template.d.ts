@@ -38,21 +38,11 @@ export declare class Template extends Control.Component<Properties> {
      */
     private skeleton;
     /**
-     * Switch elements.
-     */
-    private elements;
-    /**
      * Enable or disable the specified property in this elements.
      * @param property Property name.
      * @param state Determines whether the property must be enabled or disabled.
      */
     protected setDataProperty(property: string, state: boolean): void;
-    /**
-     * Toggles this switch by the last toggled switch.
-     * @param force Determines whether the same switch must be unchecked.
-     * @returns Returns the last switch or undefined when there is no last switch.
-     */
-    private toggleSwitch;
     /**
      * Click event handler.
      * @param event Event information.
@@ -105,6 +95,14 @@ export declare class Template extends Control.Component<Properties> {
     */
     checked: boolean;
     /**
+     * Get default switch value.
+     */
+    readonly defaultValue: any;
+    /**
+     * Get default checked state.
+     */
+    readonly defaultChecked: boolean;
+    /**
      * Get required state.
      */
     /**
@@ -129,6 +127,10 @@ export declare class Template extends Control.Component<Properties> {
      * Switch element.
      */
     readonly element: Element;
+    /**
+     * Reset the switch to its initial value and state.
+     */
+    reset(): void;
     /**
      * Switch groups.
      */

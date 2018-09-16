@@ -8,6 +8,7 @@ import * as Control from '@singleware/ui-control';
 
 import { Properties } from './properties';
 import { Element } from './element';
+import { States } from './states';
 
 /**
  * Switch template class.
@@ -20,25 +21,25 @@ export class Template extends Control.Component<Properties> {
   @Class.Private()
   private states = {
     name: ''
-  };
+  } as States;
 
   /**
    * Input element.
    */
   @Class.Private()
-  private input: HTMLInputElement = <input type="checkbox" /> as HTMLInputElement;
+  private input = <input type="checkbox" /> as HTMLInputElement;
 
   /**
    * Yes mark element.
    */
   @Class.Private()
-  private yesMarkSlot: HTMLSlotElement = <slot name="yes" class="mark yes" /> as HTMLSlotElement;
+  private yesMarkSlot = <slot name="yes" class="mark yes" /> as HTMLSlotElement;
 
   /**
    * No mark element.
    */
   @Class.Private()
-  private noMarkSlot: HTMLSlotElement = <slot name="no" class="mark no" /> as HTMLSlotElement;
+  private noMarkSlot = <slot name="no" class="mark no" /> as HTMLSlotElement;
 
   /**
    * Switch slider element.
@@ -55,7 +56,7 @@ export class Template extends Control.Component<Properties> {
    * Switch element.
    */
   @Class.Private()
-  private switch: HTMLLabelElement = (
+  private switch = (
     <label class="switch">
       {this.input}
       {this.slider}
@@ -66,7 +67,7 @@ export class Template extends Control.Component<Properties> {
    * Switch styles.
    */
   @Class.Private()
-  private styles: HTMLStyleElement = (
+  private styles = (
     <style>
       {`:host > .switch > input {
   position: absolute;
@@ -125,17 +126,11 @@ export class Template extends Control.Component<Properties> {
    * Switch skeleton.
    */
   @Class.Private()
-  private skeleton: Element = (
+  private skeleton = (
     <div slot={this.properties.slot} class={this.properties.class}>
       {this.children}
     </div>
   ) as Element;
-
-  /**
-   * Switch elements.
-   */
-  @Class.Private()
-  private elements: ShadowRoot = DOM.append(this.skeleton.attachShadow({ mode: 'closed' }), this.styles, this.switch) as ShadowRoot;
 
   /**
    * Enable or disable the specified property in this elements.
@@ -152,27 +147,6 @@ export class Template extends Control.Component<Properties> {
   }
 
   /**
-   * Toggles this switch by the last toggled switch.
-   * @param force Determines whether the same switch must be unchecked.
-   * @returns Returns the last switch or undefined when there is no last switch.
-   */
-  @Class.Private()
-  private toggleSwitch(force: boolean): Element | undefined {
-    const last = Template.groups[this.group];
-    if (last === this.skeleton) {
-      if (force) {
-        Template.groups[this.group] = void 0;
-      }
-    } else {
-      if (last) {
-        last.checked = false;
-      }
-      Template.groups[this.group] = this.skeleton;
-    }
-    return last;
-  }
-
-  /**
    * Click event handler.
    * @param event Event information.
    */
@@ -180,13 +154,18 @@ export class Template extends Control.Component<Properties> {
   private clickHandler(event: Event): void {
     if (this.input.readOnly) {
       event.preventDefault();
-    } else {
-      if (this.group) {
-        const last = this.toggleSwitch(!this.checked);
-        if (last && last !== this.skeleton) {
+    } else if (this.group) {
+      const last = Template.groups[this.group];
+      if (last !== this.skeleton) {
+        if (last) {
+          last.checked = false;
           Template.notifyChanges(last);
         }
+        this.setDataProperty('checked', (this.input.checked = true));
+        Template.groups[this.group] = this.skeleton;
+        Template.notifyChanges(this.skeleton);
       }
+    } else {
       this.setDataProperty('checked', this.input.checked);
       Template.notifyChanges(this.skeleton);
     }
@@ -210,9 +189,12 @@ export class Template extends Control.Component<Properties> {
       group: super.bindDescriptor(this, Template.prototype, 'group'),
       value: super.bindDescriptor(this, Template.prototype, 'value'),
       checked: super.bindDescriptor(this, Template.prototype, 'checked'),
+      defaultValue: super.bindDescriptor(this, Template.prototype, 'defaultValue'),
+      defaultChecked: super.bindDescriptor(this, Template.prototype, 'defaultChecked'),
       required: super.bindDescriptor(this, Template.prototype, 'required'),
       readOnly: super.bindDescriptor(this, Template.prototype, 'readOnly'),
-      disabled: super.bindDescriptor(this, Template.prototype, 'disabled')
+      disabled: super.bindDescriptor(this, Template.prototype, 'disabled'),
+      reset: super.bindDescriptor(this, Template.prototype, 'reset')
     });
   }
 
@@ -231,6 +213,7 @@ export class Template extends Control.Component<Properties> {
    */
   constructor(properties?: Properties, children?: any[]) {
     super(properties, children);
+    DOM.append(this.skeleton.attachShadow({ mode: 'closed' }), this.styles, this.switch);
     this.bindHandlers();
     this.bindProperties();
     this.assignProperties();
@@ -293,11 +276,34 @@ export class Template extends Control.Component<Properties> {
    * Set checked state.
    */
   public set checked(state: boolean) {
-    this.setDataProperty('checked', state);
-    this.input.checked = state;
     if (this.group) {
-      this.toggleSwitch(false);
+      const last = Template.groups[this.group];
+      if (state) {
+        if (last && last !== this.skeleton) {
+          last.checked = false;
+        }
+        Template.groups[this.group] = this.skeleton;
+      } else if (last === this.skeleton) {
+        Template.groups[this.group] = void 0;
+      }
     }
+    this.setDataProperty('checked', (this.input.checked = state));
+  }
+
+  /**
+   * Get default switch value.
+   */
+  @Class.Public()
+  public get defaultValue(): any {
+    return this.properties.value || 'on';
+  }
+
+  /**
+   * Get default checked state.
+   */
+  @Class.Public()
+  public get defaultChecked(): boolean {
+    return this.properties.checked || false;
   }
 
   /**
@@ -354,6 +360,15 @@ export class Template extends Control.Component<Properties> {
   @Class.Public()
   public get element(): Element {
     return this.skeleton;
+  }
+
+  /**
+   * Reset the switch to its initial value and state.
+   */
+  @Class.Public()
+  public reset(): void {
+    this.value = this.defaultValue;
+    this.checked = this.defaultChecked;
   }
 
   /**

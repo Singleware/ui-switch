@@ -24,6 +24,14 @@ export interface Element extends HTMLDivElement {
    */
   checked: boolean;
   /**
+   * Default switch value.
+   */
+  readonly defaultValue?: any;
+  /**
+   * Default checked state.
+   */
+  readonly defaultChecked: boolean;
+  /**
    * Required state.
    */
   required: boolean;
@@ -35,4 +43,8 @@ export interface Element extends HTMLDivElement {
    * Disabled state.
    */
   disabled: boolean;
+  /**
+   * Reset the switch to its initial value and state.
+   */
+  reset: () => void;
 }
