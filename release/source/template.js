@@ -21,8 +21,8 @@ const Control = require("@singleware/ui-control");
 let Template = Template_1 = class Template extends Control.Component {
     /**
      * Default constructor.
-     * @param properties Checkbox properties.
-     * @param children Checkbox children.
+     * @param properties Select properties.
+     * @param children Select children.
      */
     constructor(properties, children) {
         super(properties, children);
@@ -119,11 +119,11 @@ let Template = Template_1 = class Template extends Control.Component {
         this.assignProperties();
     }
     /**
-     * Enable or disable the specified property in this elements.
+     * Updates the specified property state.
      * @param property Property name.
-     * @param state Determines whether the property must be enabled or disabled.
+     * @param state Property state.
      */
-    setDataProperty(property, state) {
+    updatePropertyState(property, state) {
         if (state) {
             this.skeleton.dataset[property] = 'on';
         }
@@ -146,13 +146,13 @@ let Template = Template_1 = class Template extends Control.Component {
                     last.checked = false;
                     Template_1.notifyChanges(last);
                 }
-                this.setDataProperty('checked', (this.input.checked = true));
+                this.updatePropertyState('checked', (this.input.checked = true));
                 Template_1.groups[this.group] = this.skeleton;
                 Template_1.notifyChanges(this.skeleton);
             }
         }
         else {
-            this.setDataProperty('checked', this.input.checked);
+            this.updatePropertyState('checked', this.input.checked);
             Template_1.notifyChanges(this.skeleton);
         }
     }
@@ -166,24 +166,24 @@ let Template = Template_1 = class Template extends Control.Component {
      * Bind exposed properties to the custom element.
      */
     bindProperties() {
-        Object.defineProperties(this.skeleton, {
-            name: super.bindDescriptor(this, Template_1.prototype, 'name'),
-            group: super.bindDescriptor(this, Template_1.prototype, 'group'),
-            value: super.bindDescriptor(this, Template_1.prototype, 'value'),
-            checked: super.bindDescriptor(this, Template_1.prototype, 'checked'),
-            defaultValue: super.bindDescriptor(this, Template_1.prototype, 'defaultValue'),
-            defaultChecked: super.bindDescriptor(this, Template_1.prototype, 'defaultChecked'),
-            required: super.bindDescriptor(this, Template_1.prototype, 'required'),
-            readOnly: super.bindDescriptor(this, Template_1.prototype, 'readOnly'),
-            disabled: super.bindDescriptor(this, Template_1.prototype, 'disabled'),
-            reset: super.bindDescriptor(this, Template_1.prototype, 'reset')
-        });
+        this.bindComponentProperties(this.skeleton, [
+            'name',
+            'group',
+            'value',
+            'checked',
+            'defaultValue',
+            'defaultChecked',
+            'required',
+            'readOnly',
+            'disabled',
+            'reset'
+        ]);
     }
     /**
      * Assign all element properties.
      */
     assignProperties() {
-        Control.assignProperties(this, this.properties, ['name', 'group', 'value', 'checked', 'required', 'readOnly', 'disabled']);
+        this.assignComponentProperties(this.properties, ['name', 'group', 'value', 'checked', 'required', 'readOnly', 'disabled']);
     }
     /**
      * Get switch name.
@@ -243,7 +243,7 @@ let Template = Template_1 = class Template extends Control.Component {
                 Template_1.groups[this.group] = void 0;
             }
         }
-        this.setDataProperty('checked', (this.input.checked = state));
+        this.updatePropertyState('checked', (this.input.checked = state));
     }
     /**
      * Get default switch value.
@@ -267,8 +267,8 @@ let Template = Template_1 = class Template extends Control.Component {
      * Set required state.
      */
     set required(state) {
-        this.setDataProperty('required', state);
         this.input.required = state;
+        this.updatePropertyState('required', state);
     }
     /**
      * Get read-only state.
@@ -280,8 +280,8 @@ let Template = Template_1 = class Template extends Control.Component {
      * Set read-only state.
      */
     set readOnly(state) {
-        this.setDataProperty('readonly', state);
         this.input.readOnly = state;
+        this.updatePropertyState('readonly', state);
     }
     /**
      * Get disabled state.
@@ -293,8 +293,8 @@ let Template = Template_1 = class Template extends Control.Component {
      * Set disabled state.
      */
     set disabled(state) {
-        this.setDataProperty('disabled', state);
         this.input.disabled = state;
+        this.updatePropertyState('disabled', state);
     }
     /**
      * Switch element.
@@ -347,8 +347,8 @@ __decorate([
     Class.Private()
 ], Template.prototype, "skeleton", void 0);
 __decorate([
-    Class.Protected()
-], Template.prototype, "setDataProperty", null);
+    Class.Private()
+], Template.prototype, "updatePropertyState", null);
 __decorate([
     Class.Private()
 ], Template.prototype, "clickHandler", null);
