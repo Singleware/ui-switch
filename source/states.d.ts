@@ -11,4 +11,8 @@ export interface States {
    * Switch name.
    */
   name: string;
+  /**
+   * Determines whether the switch must return status or value.
+   */
+  statusOnly: boolean;
 }

@@ -124,6 +124,13 @@ export declare class Template extends Control.Component<Properties> {
     */
     disabled: boolean;
     /**
+     * Get status-only state.
+     */
+    /**
+    * Set status-only state.
+    */
+    statusOnly: boolean;
+    /**
      * Switch element.
      */
     readonly element: Element;

@@ -44,6 +44,10 @@ export interface Properties {
    */
   disabled?: boolean;
   /**
+   * Determines whether the switch must return status or value.
+   */
+  statusOnly?: boolean;
+  /**
    * Switch children.
    */
   children?: {};

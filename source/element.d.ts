@@ -44,6 +44,10 @@ export interface Element extends HTMLDivElement {
    */
   disabled: boolean;
   /**
+   * Status-only state.
+   */
+  statusOnly?: boolean;
+  /**
    * Reset the switch to its initial value and state.
    */
   reset: () => void;
