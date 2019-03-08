@@ -95,13 +95,19 @@ export declare class Template extends Control.Component<Properties> {
     */
     checked: boolean;
     /**
-     * Get default switch value.
+     * Gets the default switch value.
      */
-    readonly defaultValue: any;
     /**
-     * Get default checked state.
+    * Sets the default switch value.
+    */
+    defaultValue: any;
+    /**
+     * Gets the default checked state.
      */
-    readonly defaultChecked: boolean;
+    /**
+    * Sets the default checked state.
+    */
+    defaultChecked: boolean;
     /**
      * Get required state.
      */
@@ -124,12 +130,19 @@ export declare class Template extends Control.Component<Properties> {
     */
     disabled: boolean;
     /**
-     * Get status-only state.
+     * Gets the checked state value.
      */
     /**
-    * Set status-only state.
+    * Sets the checked state value.
     */
-    statusOnly: boolean;
+    checkedValue: any;
+    /**
+     * Gets the unchecked state value.
+     */
+    /**
+    * Sets the unchecked state value.
+    */
+    uncheckedValue: any;
     /**
      * Switch element.
      */

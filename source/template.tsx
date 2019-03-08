@@ -20,7 +20,9 @@ export class Template extends Control.Component<Properties> {
    */
   @Class.Private()
   private states = {
-    name: ''
+    name: '',
+    checkedValue: 'on',
+    uncheckedValue: 'off'
   } as States;
 
   /**
@@ -194,7 +196,8 @@ export class Template extends Control.Component<Properties> {
       'required',
       'readOnly',
       'disabled',
-      'statusOnly',
+      'checkedValue',
+      'uncheckedValue',
       'reset'
     ]);
   }
@@ -209,10 +212,13 @@ export class Template extends Control.Component<Properties> {
       'group',
       'value',
       'checked',
+      'defaultValue',
+      'defaultChecked',
       'required',
       'readOnly',
       'disabled',
-      'statusOnly'
+      'checkedValue',
+      'uncheckedValue'
     ]);
   }
 
@@ -264,21 +270,14 @@ export class Template extends Control.Component<Properties> {
    */
   @Class.Public()
   public get value(): any {
-    if (this.states.statusOnly) {
-      return this.checked;
-    }
-    return this.checked ? this.input.value : void 0;
+    return this.checked ? this.states.checkedValue : this.states.uncheckedValue;
   }
 
   /**
    * Set switch value.
    */
   public set value(value: any) {
-    if (this.states.statusOnly) {
-      this.checked = Boolean(value);
-    } else {
-      this.input.value = value;
-    }
+    this.checked = this.states.checkedValue === value;
   }
 
   /**
@@ -308,19 +307,33 @@ export class Template extends Control.Component<Properties> {
   }
 
   /**
-   * Get default switch value.
+   * Gets the default switch value.
    */
   @Class.Public()
   public get defaultValue(): any {
-    return this.properties.value || 'on';
+    return this.input.defaultValue;
   }
 
   /**
-   * Get default checked state.
+   * Sets the default switch value.
+   */
+  public set defaultValue(value: any) {
+    this.input.defaultValue = value;
+  }
+
+  /**
+   * Gets the default checked state.
    */
   @Class.Public()
   public get defaultChecked(): boolean {
-    return this.properties.checked || false;
+    return this.input.defaultChecked;
+  }
+
+  /**
+   * Sets the default checked state.
+   */
+  public set defaultChecked(value: boolean) {
+    this.input.defaultChecked = value;
   }
 
   /**
@@ -372,18 +385,33 @@ export class Template extends Control.Component<Properties> {
   }
 
   /**
-   * Get status-only state.
+   * Gets the checked state value.
    */
   @Class.Public()
-  public get statusOnly(): boolean {
-    return this.states.statusOnly;
+  public get checkedValue(): any {
+    return this.states.checkedValue;
   }
 
   /**
-   * Set status-only state.
+   * Sets the checked state value.
    */
-  public set statusOnly(state: boolean) {
-    this.states.statusOnly = state;
+  public set checkedValue(value: any) {
+    this.states.checkedValue = value;
+  }
+
+  /**
+   * Gets the unchecked state value.
+   */
+  @Class.Public()
+  public get uncheckedValue(): any {
+    return this.states.uncheckedValue;
+  }
+
+  /**
+   * Sets the unchecked state value.
+   */
+  public set uncheckedValue(value: any) {
+    this.states.uncheckedValue = value;
   }
 
   /**

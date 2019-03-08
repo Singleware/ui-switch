@@ -12,7 +12,11 @@ export interface States {
    */
   name: string;
   /**
-   * Determines whether the switch must return status or value.
+   * Value returned when the switch is checked.
    */
-  statusOnly: boolean;
+  checkedValue: any;
+  /**
+   * Value returned when the switch isn't checked.
+   */
+  uncheckedValue: any;
 }

@@ -36,6 +36,14 @@ export interface Properties {
    */
   required?: boolean;
   /**
+   * Default switch value.
+   */
+  defaultValue?: any;
+  /**
+   * Default checked state.
+   */
+  defaultChecked?: boolean;
+  /**
    * Determines whether the switch is read-only or not.
    */
   readOnly?: boolean;
@@ -44,9 +52,13 @@ export interface Properties {
    */
   disabled?: boolean;
   /**
-   * Determines whether the switch must return status or value.
+   * Value returned when the switch is checked.
    */
-  statusOnly?: boolean;
+  checkedValue?: any;
+  /**
+   * Value returned when the switch isn't checked.
+   */
+  uncheckedValue?: any;
   /**
    * Switch children.
    */

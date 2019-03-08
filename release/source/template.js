@@ -30,7 +30,9 @@ let Template = Template_1 = class Template extends Control.Component {
          * Switch states.
          */
         this.states = {
-            name: ''
+            name: '',
+            checkedValue: 'on',
+            uncheckedValue: 'off'
         };
         /**
          * Input element.
@@ -176,7 +178,8 @@ let Template = Template_1 = class Template extends Control.Component {
             'required',
             'readOnly',
             'disabled',
-            'statusOnly',
+            'checkedValue',
+            'uncheckedValue',
             'reset'
         ]);
     }
@@ -189,10 +192,13 @@ let Template = Template_1 = class Template extends Control.Component {
             'group',
             'value',
             'checked',
+            'defaultValue',
+            'defaultChecked',
             'required',
             'readOnly',
             'disabled',
-            'statusOnly'
+            'checkedValue',
+            'uncheckedValue'
         ]);
     }
     /**
@@ -223,21 +229,13 @@ let Template = Template_1 = class Template extends Control.Component {
      * Get switch value.
      */
     get value() {
-        if (this.states.statusOnly) {
-            return this.checked;
-        }
-        return this.checked ? this.input.value : void 0;
+        return this.checked ? this.states.checkedValue : this.states.uncheckedValue;
     }
     /**
      * Set switch value.
      */
     set value(value) {
-        if (this.states.statusOnly) {
-            this.checked = Boolean(value);
-        }
-        else {
-            this.input.value = value;
-        }
+        this.checked = this.states.checkedValue === value;
     }
     /**
      * Get checked state.
@@ -264,16 +262,28 @@ let Template = Template_1 = class Template extends Control.Component {
         this.updatePropertyState('checked', (this.input.checked = state));
     }
     /**
-     * Get default switch value.
+     * Gets the default switch value.
      */
     get defaultValue() {
-        return this.properties.value || 'on';
+        return this.input.defaultValue;
     }
     /**
-     * Get default checked state.
+     * Sets the default switch value.
+     */
+    set defaultValue(value) {
+        this.input.defaultValue = value;
+    }
+    /**
+     * Gets the default checked state.
      */
     get defaultChecked() {
-        return this.properties.checked || false;
+        return this.input.defaultChecked;
+    }
+    /**
+     * Sets the default checked state.
+     */
+    set defaultChecked(value) {
+        this.input.defaultChecked = value;
     }
     /**
      * Get required state.
@@ -315,16 +325,28 @@ let Template = Template_1 = class Template extends Control.Component {
         this.updatePropertyState('disabled', state);
     }
     /**
-     * Get status-only state.
+     * Gets the checked state value.
      */
-    get statusOnly() {
-        return this.states.statusOnly;
+    get checkedValue() {
+        return this.states.checkedValue;
     }
     /**
-     * Set status-only state.
+     * Sets the checked state value.
      */
-    set statusOnly(state) {
-        this.states.statusOnly = state;
+    set checkedValue(value) {
+        this.states.checkedValue = value;
+    }
+    /**
+     * Gets the unchecked state value.
+     */
+    get uncheckedValue() {
+        return this.states.uncheckedValue;
+    }
+    /**
+     * Sets the unchecked state value.
+     */
+    set uncheckedValue(value) {
+        this.states.uncheckedValue = value;
     }
     /**
      * Switch element.
@@ -420,7 +442,10 @@ __decorate([
 ], Template.prototype, "disabled", null);
 __decorate([
     Class.Public()
-], Template.prototype, "statusOnly", null);
+], Template.prototype, "checkedValue", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "uncheckedValue", null);
 __decorate([
     Class.Public()
 ], Template.prototype, "element", null);
