@@ -210,15 +210,15 @@ export class Template extends Control.Component<Properties> {
     this.assignComponentProperties(this.properties, [
       'name',
       'group',
+      'checkedValue',
+      'uncheckedValue',
       'value',
       'checked',
       'defaultValue',
       'defaultChecked',
       'required',
       'readOnly',
-      'disabled',
-      'checkedValue',
-      'uncheckedValue'
+      'disabled'
     ]);
   }
 

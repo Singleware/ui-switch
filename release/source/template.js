@@ -190,15 +190,15 @@ let Template = Template_1 = class Template extends Control.Component {
         this.assignComponentProperties(this.properties, [
             'name',
             'group',
+            'checkedValue',
+            'uncheckedValue',
             'value',
             'checked',
             'defaultValue',
             'defaultChecked',
             'required',
             'readOnly',
-            'disabled',
-            'checkedValue',
-            'uncheckedValue'
+            'disabled'
         ]);
     }
     /**
